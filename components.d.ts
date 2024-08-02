@@ -7,9 +7,18 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AButton: typeof import('@arco-design/web-vue')['Button']
     AConfigProvider: typeof import('@arco-design/web-vue')['ConfigProvider']
+    AInputGroup: typeof import('@arco-design/web-vue')['InputGroup']
+    AInputSearch: typeof import('@arco-design/web-vue')['InputSearch']
+    ALayout: typeof import('@arco-design/web-vue')['Layout']
+    AOption: typeof import('@arco-design/web-vue')['Option']
+    ASelect: typeof import('@arco-design/web-vue')['Select']
+    ASpace: typeof import('@arco-design/web-vue')['Space']
+    ATable: typeof import('@arco-design/web-vue')['Table']
+    Result: typeof import('./src/components/Result.vue')['default']
+    ResultList: typeof import('./src/components/ResultList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchBox: typeof import('./src/components/SearchBox.vue')['default']
   }
 }
