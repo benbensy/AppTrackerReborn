@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { TableData, TableExpandable } from "@arco-design/web-vue";
-import { reactive } from "vue";
-
-type ColumnOptions = { title: string; dataIndex: string };
+import {
+  TableColumnData,
+  TableData,
+  TableExpandable,
+} from "@arco-design/web-vue";
+import { h, reactive } from "vue";
+import ExpandedContent from "./ExpandedContent.vue";
 
 export interface ResultListData extends TableData {
   id: string;
@@ -24,13 +27,20 @@ const columns = [
     title: "活动",
     dataIndex: "activityName",
   },
-] satisfies ColumnOptions[];
+  {
+    title: "操作",
+    fixed: "right",
+  },
+] satisfies TableColumnData[];
 
 const expandable = reactive<TableExpandable>({
-  expandedRowRender(record) {
-    const { id } = record as ResultListData;
-    
-    return id;
+  expandedRowRender: (record) => {
+    const { id, packageName } = record as ResultListData;
+
+    return h(ExpandedContent, {
+      id,
+      packageName,
+    });
   },
 });
 

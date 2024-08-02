@@ -7,16 +7,21 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ACol: typeof import('@arco-design/web-vue')['Col']
     AConfigProvider: typeof import('@arco-design/web-vue')['ConfigProvider']
+    AImage: typeof import('@arco-design/web-vue')['Image']
     AInputGroup: typeof import('@arco-design/web-vue')['InputGroup']
     AInputSearch: typeof import('@arco-design/web-vue')['InputSearch']
     ALayout: typeof import('@arco-design/web-vue')['Layout']
     AOption: typeof import('@arco-design/web-vue')['Option']
+    ARow: typeof import('@arco-design/web-vue')['Row']
     ASelect: typeof import('@arco-design/web-vue')['Select']
     ASpace: typeof import('@arco-design/web-vue')['Space']
     ATable: typeof import('@arco-design/web-vue')['Table']
-    Result: typeof import('./src/components/Result.vue')['default']
-    ResultList: typeof import('./src/components/ResultList.vue')['default']
+    ATypography: typeof import('@arco-design/web-vue')['Typography']
+    ATypographyTitle: typeof import('@arco-design/web-vue')['TypographyTitle']
+    ExpandedContent: typeof import('./src/components/ResultTable/ExpandedContent.vue')['default']
+    ResultTable: typeof import('./src/components/ResultTable/ResultTable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchBox: typeof import('./src/components/SearchBox.vue')['default']

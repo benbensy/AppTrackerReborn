@@ -1,41 +1,40 @@
 <script setup lang="ts">
-import ResultList from "@/components/ResultList.vue";
-import SearchBox, { SearchType } from "@/components/SearchBox.vue";
-import { useGetAppInfo } from "@/data/appInfo";
-import { computed, ref } from "vue";
+import { SearchType } from "@/components/SearchBox.vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
+const type = ref<SearchType>("keyword");
+const wd = ref("");
 const per = ref(20);
 const page = ref(1);
 
-const { data, loading, run: getAppInfo, mutate } = useGetAppInfo();
-
-function search({
-  searchType,
-  keyword,
-}: {
-  searchType: SearchType;
-  keyword: string;
-}) {
-  if (searchType === "keyword") {
-    getAppInfo({ q: keyword, per: per.value, page: page.value });
-  } else {
-    getAppInfo({ regex: keyword });
-  }
+const router = useRouter();
+function search() {
+  router.replace(
+    wd.value
+      ? {
+          name: "search",
+          query: {
+            type: type.value,
+            wd: wd.value,
+            per: per.value,
+            page: page.value,
+          },
+        }
+      : { query: {} }
+  );
 }
-
-const resultListData = computed(() =>
-  data.value?.items.map(({ id, appName, activityName, packageName }) => ({
-    id,
-    appName,
-    activityName,
-    packageName,
-  }))
-);
 </script>
 
 <template>
-  <a-space direction="vertical">
-    <SearchBox @search="search" @clear="mutate(undefined)" />
-    <ResultList v-if="data !== undefined" :loading="loading" :data="loading ? undefined : resultListData" />
+  <a-space direction="vertical" align="center">
+    <a-typography>
+      <a-typography-title>App Tracker</a-typography-title>
+    </a-typography>
+    <SearchBox
+      v-model:keyword="wd"
+      v-model:search-type="type"
+      @search="search"
+    />
   </a-space>
 </template>
