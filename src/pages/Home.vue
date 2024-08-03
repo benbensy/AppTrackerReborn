@@ -9,9 +9,9 @@ const page = ref(1);
 
 const router = useRouter();
 function search() {
-  if (wd.value) {    
+  if (wd.value) {
     router.replace({
-      name: 'search',
+      name: "search",
       query: {
         type: type.value,
         wd: wd.value,
@@ -24,7 +24,13 @@ function search() {
 
 <template>
   <a-space direction="vertical" align="center" :size="14">
-    <div class="text-4xl font-bold ">App Tracker</div>
+    <div class="md:text-4xl text-2xl font-bold">
+      App Tracker For
+      <span class="underline underline-wavy decoration-yellow-300"
+        >Icon Pack</span
+      >
+      <template v-if="type === 'regex'">*</template>
+    </div>
     <SearchBox
       v-model:keyword="wd"
       v-model:search-type="type"

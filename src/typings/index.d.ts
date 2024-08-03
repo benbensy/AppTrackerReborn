@@ -1,4 +1,4 @@
-interface ApiResponse<T> {
+interface GetAppinfoResponse {
   metadata: {
     page: number;
     per: number;

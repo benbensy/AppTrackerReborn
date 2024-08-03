@@ -13,6 +13,7 @@ export interface ResultListData extends TableData {
   appName: string;
   packageName: string;
   activityName: string;
+  count: number;
 }
 
 const columns = [
@@ -38,6 +39,14 @@ const columns = [
     },
   },
   {
+    title: "提交数",
+    dataIndex: "count",
+    width: 120,
+    sortable: {
+      sortDirections: ["ascend", "descend"],
+    },
+  },
+  {
     title: "操作",
     fixed: "right",
     width: 120,
@@ -58,7 +67,7 @@ const expandable = reactive<TableExpandable>({
   },
 });
 
-defineModel<number>('page')
+defineModel<number>("page");
 
 defineProps<{
   data: ResultListData[] | undefined;
@@ -83,7 +92,7 @@ defineProps<{
       total,
       pageSize: 20,
     }"
-    :scroll="{'maxHeight': '70vh'}"
+    :scroll="{ maxHeight: '70vh' }"
     @page-change="$emit('update:page', $event)"
   />
 </template>

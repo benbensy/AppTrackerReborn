@@ -66,13 +66,16 @@ function clear() {
 }
 
 const resultListData = computed(() =>
-  data.value?.items.map(({ id, appName, activityName, packageName }) => ({
-    key: id,
-    id,
-    appName,
-    activityName,
-    packageName,
-  }))
+  data.value?.items.map(
+    ({ id, appName, activityName, packageName, count }) => ({
+      key: id,
+      id,
+      appName,
+      activityName,
+      packageName,
+      count,
+    })
+  )
 );
 
 const total = computed(() => data.value?.metadata.total);
@@ -80,7 +83,13 @@ const total = computed(() => data.value?.metadata.total);
 
 <template>
   <a-space direction="vertical" align="center" :size="14">
-    <div class="text-4xl font-bold">App Tracker</div>
+    <div class="md:text-4xl text-2xl font-bold">
+      App Tracker For
+      <span class="underline underline-wavy decoration-yellow-300"
+        >Icon Pack</span
+      >
+      <template v-if="internalType === 'regex'">*</template>
+    </div>
     <SearchBox
       v-model:keyword="internalWd"
       v-model:search-type="internalType"

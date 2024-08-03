@@ -18,11 +18,11 @@ const router = useRouter();
         <Link to="/">首页</Link>
       </a-space>
       <a-space>
-        <a-button type="primary" size="small">登录</a-button>
+        <a-button type="primary" size="small" @click="router.push({name: 'login'})">登录</a-button>
       </a-space>
     </a-layout-header>
     <a-layout-content class="m-auto max-w-full md:max-w-screen-xl">
-      <slot />
+      <router-view />
     </a-layout-content>
     <a-layout-footer class="flex justify-center">
       <div class="mt-2">&copy; {{ new Date().getFullYear() }} Indusy</div>
