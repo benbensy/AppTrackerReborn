@@ -8,8 +8,13 @@ interface GetAppInfoPayload {
   per: number;
 }
 const getAppInfo = async (params: Partial<GetAppInfoPayload>) => {
-  const { data } = await get<ApiResponse<GetAppinfoResponse> | null | undefined>("/api/appinfo", {
-    params,
+  const { data } = await get<
+    ApiResponse<GetAppinfoResponse> | null | undefined
+  >("/api/appinfo", {
+    params: {
+      ...params,
+      per: 20,
+    },
   });
   return data;
 };

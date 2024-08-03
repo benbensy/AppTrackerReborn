@@ -2,22 +2,27 @@
 import ResultTable from "@/components/ResultTable/ResultTable.vue";
 import SearchBox, { SearchType } from "@/components/SearchBox.vue";
 import { useGetAppInfo } from "@/data/appInfo";
-import { computed, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRouteQuery } from "@vueuse/router";
 import { useRouter } from "vue-router";
 
 const type = useRouteQuery<SearchType>("type", "keyword");
-const per = useRouteQuery("per", 20, { transform: Number });
 const page = useRouteQuery("page", 1, { transform: Number });
 const wd = useRouteQuery<string>("wd", "");
+
+const internalType = ref(type.value);
+const internalWd = ref(wd.value);
 
 const { data, loading, run: getAppInfo, mutate } = useGetAppInfo();
 
 watch(
-  [type, per, page, wd],
-  () => {
+  [type, page, wd],
+  ([oldType, _, oldWd]) => {
+    if (oldType !== type.value || oldWd !== wd.value) {
+      page.value = 1;
+    }
+
     const payload = {
-      per: per.value,
       page: page.value,
     };
 
@@ -40,18 +45,19 @@ watch(
 
 const router = useRouter();
 function search() {
-  router.replace(
-    wd.value
-      ? {
-          query: {
-            type: type.value,
-            wd: wd.value,
-            per: per.value,
-            page: page.value,
-          },
-        }
-      : { query: {} }
-  );
+  if (internalWd.value) {
+    router.replace({
+      query: {
+        type: type.value,
+        wd: wd.value,
+        page: page.value,
+      },
+    });
+    wd.value = internalWd.value;
+    type.value = internalType.value;
+  } else {
+    clear();
+  }
 }
 
 function clear() {
@@ -68,16 +74,17 @@ const resultListData = computed(() =>
     packageName,
   }))
 );
+
+const total = computed(() => data.value?.metadata.total);
 </script>
 
 <template>
-  <a-space direction="vertical" align="center">
-    <a-typography>
-      <a-typography-title>App Tracker</a-typography-title>
-    </a-typography>
+  <a-space direction="vertical" align="center" :size="14">
+    <div class="text-4xl font-bold">App Tracker</div>
     <SearchBox
-      v-model:keyword="wd"
-      v-model:search-type="type"
+      v-model:keyword="internalWd"
+      v-model:search-type="internalType"
+      :loading="loading"
       @search="search"
       @clear="clear"
     />
@@ -85,6 +92,8 @@ const resultListData = computed(() =>
       v-if="data !== undefined"
       :loading="loading"
       :data="loading ? undefined : resultListData"
+      v-model:page="page"
+      :total="total ?? 0"
     />
   </a-space>
 </template>

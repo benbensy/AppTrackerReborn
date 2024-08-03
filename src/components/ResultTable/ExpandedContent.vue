@@ -8,9 +8,6 @@ const { packageName } = defineProps<{
 
 const { data, run: getAppIconLocal } = useGetAppIconLocal();
 
-console.log(data);
-
-
 getAppIconLocal({
   packageName,
 });
