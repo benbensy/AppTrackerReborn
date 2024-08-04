@@ -2,38 +2,30 @@
 import {
   RouteLocationAsPathGeneric,
   RouteLocationAsRelativeGeneric,
+  useLink,
 } from "vue-router";
-
-defineProps<{
+const { to } = defineProps<{
   to: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric;
 }>();
+
+const { navigate, href, isActive, isExactActive } = useLink({ to });
 </script>
 
 <template>
-  <router-link
-    :to="to"
-    custom
-    v-slot="{ navigate, href, isActive, isExactActive }"
+  <a-link
+    v-bind="$attrs"
+    :href="href"
+    @click="navigate"
+    :class="{
+      active: isActive || isExactActive,
+    }"
   >
-    <a
-      :href="href"
-      :class="[
-        'arco-link',
-        {
-          'arco-link-active': isActive,
-          'arco-link-exact-active': isExactActive,
-        },
-      ]"
-      @click="navigate"
-    >
-      <slot />
-    </a>
-  </router-link>
+    <slot />
+  </a-link>
 </template>
 
 <style scoped>
-.arco-link-active,
-.arco-link-exact-active {
+.active {
   text-decoration: underline dashed;
 }
 </style>

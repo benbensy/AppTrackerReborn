@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {
-  TableColumnData,
   TableData,
   TableExpandable,
+  TableSortable,
 } from "@arco-design/web-vue";
 import { h, reactive } from "vue";
 import ExpandedContent from "./ExpandedContent.vue";
@@ -16,53 +16,14 @@ export interface ResultListData extends TableData {
   count: number;
 }
 
-const columns = [
-  {
-    title: "App",
-    dataIndex: "appName",
-    sortable: {
-      sortDirections: ["ascend", "descend"],
-    },
-  },
-  {
-    title: "包名",
-    dataIndex: "packageName",
-    sortable: {
-      sortDirections: ["ascend", "descend"],
-    },
-  },
-  {
-    title: "活动",
-    dataIndex: "activityName",
-    sortable: {
-      sortDirections: ["ascend", "descend"],
-    },
-  },
-  {
-    title: "提交数",
-    dataIndex: "count",
-    width: 120,
-    sortable: {
-      sortDirections: ["ascend", "descend"],
-    },
-  },
-  {
-    title: "操作",
-    fixed: "right",
-    width: 120,
-    render: ({ record }) => {
-      return h(ResultOperation, { record: record as ResultListData });
-    },
-  },
-] satisfies TableColumnData[];
+const sortable = {
+  sortDirections: ["ascend", "descend"],
+} satisfies TableSortable;
 
 const expandable = reactive<TableExpandable>({
   expandedRowRender: (record) => {
-    const { id, packageName } = record as ResultListData;
-
     return h(ExpandedContent, {
-      id,
-      packageName,
+      record: record as ResultListData,
     });
   },
 });
@@ -78,7 +39,6 @@ defineProps<{
 
 <template>
   <a-table
-    :columns="columns"
     :data="data"
     :loading="loading"
     :expandable="expandable"
@@ -87,12 +47,55 @@ defineProps<{
       showCheckedAll: true,
       onlyCurrent: false,
     }"
-    table-layout-fixed
     :pagination="{
       total,
       pageSize: 20,
     }"
-    :scroll="{ maxHeight: '70vh' }"
+    :scroll="{ maxHeight: '70vh', x: 1280 }"
+    table-layout-fixed
     @page-change="$emit('update:page', $event)"
-  />
+    size="small"
+    class="w-full"
+  >
+    <template #columns>
+      <a-table-column title="App" data-index="appName" :sortable="sortable">
+        <template #cell="{ record }">
+          {{ record.appName }}
+        </template>
+      </a-table-column>
+      <a-table-column
+        title="包名"
+        data-index="packageName"
+        :sortable="sortable"
+      >
+        <template #cell="{ record }">
+          {{ record.packageName }}
+        </template>
+      </a-table-column>
+      <a-table-column
+        title="活动"
+        data-index="activityName"
+        :sortable="sortable"
+      >
+        <template #cell="{ record }">
+          {{ record.activityName }}
+        </template>
+      </a-table-column>
+      <a-table-column
+        title="提交数"
+        data-index="count"
+        :sortable="sortable"
+        :width="120"
+      >
+        <template #cell="{ record }">
+          {{ record.count }}
+        </template>
+      </a-table-column>
+      <a-table-column title="操作" fixed="right" :width="120">
+        <template #cell="{ record }">
+          <ResultOperation :record="record" />
+        </template>
+      </a-table-column>
+    </template>
+  </a-table>
 </template>

@@ -23,10 +23,11 @@ function submit() {
           {
             required: true,
             match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+            message: '请填写邮箱'
           },
         ]"
       >
-        <a-input v-model="form.email" />
+        <a-input v-model="form.email" placeholder="邮箱" />
       </a-form-item>
       <a-form-item
         field="name"
@@ -34,10 +35,11 @@ function submit() {
         :rules="[
           {
             required: true,
+            message: '请填写用户名',
           },
         ]"
       >
-        <a-input v-model="form.name" />
+        <a-input v-model="form.name" placeholder="用户名" />
       </a-form-item>
       <a-form-item
         field="password"
@@ -47,10 +49,11 @@ function submit() {
             required: true,
             minLength: 8,
             maxLength: 16,
+            message: '请填写密码'
           },
         ]"
       >
-        <a-input-password v-model="form.password" />
+        <a-input-password v-model="form.password" placeholder="密码" />
       </a-form-item>
       <a-form-item
         field="confirmPassword"
@@ -60,10 +63,18 @@ function submit() {
             required: true,
             minLength: 8,
             maxLength: 16,
+            message: '请填写确认密码',
+            validator(value, callback) {
+              if (value !== form.password) {
+                callback('两次输入密码不一致');
+              } else {
+                callback();
+              }
+            },
           },
         ]"
       >
-        <a-input-password v-model="form.confirmPassword" />
+        <a-input-password v-model="form.confirmPassword" placeholder="确认密码" />
       </a-form-item>
       <a-form-item>
         <a-button type="primary" html-type="submit">注册</a-button>

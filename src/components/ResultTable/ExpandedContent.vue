@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useGetAppIconLocal } from "@/data/icon";
+import { ResultListData } from "./ResultTable.vue";
 
-const { packageName } = defineProps<{
-  id: string;
-  packageName: string;
+const { record } = defineProps<{
+  record: ResultListData
 }>();
 
 const { data, run: getAppIconLocal } = useGetAppIconLocal();
 
 getAppIconLocal({
-  packageName,
+  packageName: record.packageName,
 });
 </script>
 

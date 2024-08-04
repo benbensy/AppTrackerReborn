@@ -7,16 +7,22 @@ export const routes = [
   {
     path: "/",
     component: BaseLayout,
+    redirect: { name: "home" },
     children: [
       {
         name: "home",
-        path: "/",
+        path: "./",
         component: Home,
       },
       {
         name: "search",
-        path: "/search",
+        path: "search",
         component: Search,
+      },
+      {
+        name: "workbench",
+        path: "workbench",
+        component: () => import("@/pages/Workbench.vue"),
       },
     ],
   },
@@ -26,8 +32,8 @@ export const routes = [
     component: () => import("@/pages/Login/Login.vue"),
   },
   {
-    name: "signup",
-    path: "/signup",
+    name: "sign-up",
+    path: "/sign-up",
     component: () => import("@/pages/Login/SignUp.vue"),
   },
 ] satisfies RouteRecordRaw[];
